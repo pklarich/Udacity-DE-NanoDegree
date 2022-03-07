@@ -87,14 +87,14 @@ See etl file.
 
 ### Create the data model
 
-![Data Model](https://github.com/pklarich//blob/Udacity-DE-NanoDegree/Capstone/DataModel.png?raw=true)
+![Data Model](https://github.com/pklarich/Udacity-DE-NanoDegree/blob/master/Capstone/DataModel.png?raw=true)
 
 ### Perform data quality checks
 
 See data_quality file
 ### Data dictionary
 
-![Data Dictionary](https://github.com/pklarich//blob/Udacity-DE-NanoDegree/Capstone/DataDictionary.png?raw=true)
+![Data Dictionary](https://github.com/pklarich/Udacity-DE-NanoDegree/blob/master/Capstone/DataDictionary.png?raw=true)
 
 ## Step 5: Complete Project Write Up
 
