@@ -1,6 +1,6 @@
 # Capstone Project - NBA Database
 
-##Project Summary
+## Project Summary
 
 The goal if this project was to combine data from the NBA API and active NBA contract data from [basketball-reference.com](https://www.basketball-reference.com/contracts/). This data is a starting point to being able to analyze active players performance relative to their current pay-rate. The data being loaded allows for many different forms of performance based statistics to be calculated.
 
@@ -20,18 +20,18 @@ A tutorial on cluster creation and related help can be found [here](https://docs
 
 It is necessary to have [Python](https://www.python.org/downloads/) installed along with the following libraries:
 
-*configparser
-*psycopg2
-*pandas
-*boto3
-*s3fs
-*requests
-*csv
-*io
-*datetime
-*time
-*os
-*nba_api
+* configparser
+* psycopg2
+* pandas
+* boto3
+* s3fs
+* requests
+* csv
+* io
+* datetime
+* time
+* os
+* nba_api
 
 Please refer to 
 [here](https://docs.python.org/3/installing/index.html)
