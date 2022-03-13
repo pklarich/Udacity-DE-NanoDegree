@@ -83,7 +83,40 @@ The data model is centered around the 'games' table as the facts table. The dime
 
 ## Step 4: Run Pipelines to Model the Data
 
-See etl file.
+See etl file. Belwo is an example query that was ran which locates players that have shot with either a field goal percentage of greater than 50% or a 3 point field goal percentage of greateer than 40% in the most recent season and then filters by players being paid less than 10 million dollars. This is a simple example of how this data set could potentially be used to determine under valued players.
+
+'''
+SELECT s1.player_id,
+last_name,
+first_name,
+fg_percent,
+fg3_percent,
+salary
+FROM(
+SELECT 
+p1.player_id,
+CAST(sum(fg) AS float) / sum(fga) as fg_percent,
+CAST(sum(fg3m) AS float) / sum(fg3a) as fg3_percent
+FROM 
+player_stats as p1
+WHERE fg > 0
+AND fga > 10
+AND fg3m > 0
+AND fg3a > 10
+AND game_id > 21000000
+GROUP BY player_id)
+AS s1
+JOIN contracts as s2
+ON s1.player_id = s2.player_id
+JOIN players as s3
+ON s1.player_id = s3.player_id
+WHERE (fg_percent > .50 OR fg3_percent >.40)
+AND salary < 10000000;
+'''
+
+Below are the first 5 (out of 61) results from this query and the full results can be seen in the results.csv
+
+![Query Results](https://github.com/pklarich/Udacity-DE-NanoDegree/blob/master/Capstone/results.png?raw=true)
 
 ### Create the data model
 
