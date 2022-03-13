@@ -27,8 +27,8 @@ staging_contracts_drop = "DROP TABLE IF EXISTS staging_contracts"
 player_count = "SELECT COUNT(*) as record_cnt FROM players"
 team_count = "SELECT COUNT(*) as record_cnt FROM teams"
 game_count = "SELECT COUNT(*) as record_cnt FROM games"
-playerstats_count = "SELECT COUNT(*) as record_cnt FROM playerstats"
-teamstats_count = "SELECT COUNT(*) as record_cnt FROM teamstats"
+playerstats_count = "SELECT COUNT(*) as record_cnt FROM player_stats"
+teamstats_count = "SELECT COUNT(*) as record_cnt FROM team_stats"
 contracts_count = "SELECT COUNT(*) as record_cnt FROM contracts"
 
 # RECORD PREVIEW
@@ -36,8 +36,8 @@ contracts_count = "SELECT COUNT(*) as record_cnt FROM contracts"
 player_preview = "SELECT * FROM players LIMIT 10"
 team_preview = "SELECT * FROM teams LIMIT 10"
 game_preview = "SELECT * FROM games LIMIT 10"
-playerstats_preview = "SELECT * FROM playerstats LIMIT 10"
-teamstats_preview = "SELECT * FROM teamstats LIMIT 10"
+playerstats_preview = "SELECT * FROM player_stats LIMIT 10"
+teamstats_preview = "SELECT * FROM team_stats LIMIT 10"
 contracts_preview = "SELECT * FROM contracts LIMIT 10"
 
 # CREATE TABLES
@@ -187,9 +187,8 @@ season_id int,
 game_date date,
 matchup varchar(50),
 home_team_id int,
-away_team_id int
-DISTSTYLE AUTO
-)
+away_team_id int)
+DISTSTYLE AUTO;
 """)
 
 players_table_create = ("""
@@ -205,9 +204,8 @@ height varchar(10),
 weight varchar(10),
 age numeric,
 exp int,
-school varchar(250)
-DISTSTYLE ALL
-)
+school varchar(250))
+DISTSTYLE ALL;
 """)
 
 teams_table_create = ("""
@@ -216,9 +214,8 @@ team_id int PRIMARY KEY,
 team_city varchar(200),
 team_state varchar(200),
 team_nickname varchar(200),
-team_ab varchar(50)
-DISTSTYLE ALL
-)
+team_ab varchar(50))
+DISTSTYLE ALL;
 """)
 
 
@@ -227,9 +224,8 @@ CREATE TABLE IF NOT EXISTS contracts(
 player_id int PRIMARY KEY,
 team_id int,
 season_id int,
-salary int
-DISTSTYLE ALL
-)
+salary int)
+DISTSTYLE ALL;
 """)
 
 player_stats_table_create = ("""
@@ -251,9 +247,8 @@ oreb int,
 dreb int,
 stl int,
 blk int,
-pf int
-DISTSTYLE KEY
-)
+pf int)
+DISTSTYLE KEY;
 """)
 
 team_stats_table_create = ("""
@@ -274,9 +269,8 @@ oreb int,
 dreb int,
 stl int,
 blk int,
-pf int
-DISTSTYLE KEY
-)
+pf int)
+DISTSTYLE KEY;
 """)
 
 ######## COPY DATA TO STAGING TABLES ###########
@@ -393,9 +387,11 @@ END as salary
 FROM (SELECT s2.player as player_name, _2021_22 as salary, tm as team_ab
 FROM staging_contracts as s2) as s3
 LEFT JOIN staging_players as s1
-ON s3.player_name = s1.full_name 
+ON lower(s3.player_name) = lower(s1.full_name)
 LEFT JOIN staging_teams as s4
 ON s3.team_ab=s4.abbreviation
+WHERE s1.is_active = 'True'
+AND s1.player_id IS NOT NULL;
 """)
 
 team_table_insert = ("""
@@ -545,11 +541,11 @@ FROM staging_teamstats as s1;
 
 create_table_queries = [staging_playerstats_create, staging_teamstats_create, staging_games_create, staging_players_create, staging_teams_create,
                         staging_team_roster_create, staging_contracts_create, games_table_create, players_table_create, teams_table_create,
-                        seasons_table_create, contracts_table_create, player_stats_table_create, team_stats_table_create]
-drop_table_queries = [players_table_drop,teams_table_drop,games_table_drop,playerstats_table_drop,teamstats_table_drop,seasons_table_drop,
+                     contracts_table_create, player_stats_table_create, team_stats_table_create]
+drop_table_queries = [players_table_drop,teams_table_drop,games_table_drop,playerstats_table_drop,teamstats_table_drop,
                       contracts_table_drop,staging_playerstats_drop,staging_teamstats_drop,staging_players_drop,staging_teams_drop,
                       staging_team_roster_table_drop,staging_games_drop,staging_contracts_drop]
 insert_table_queries = [contracts_table_insert, games_table_insert,team_table_insert,player_table_insert,player_stats_table_insert, team_stats_table_insert]
 staging_copy_queries = [staging_contracts_copy, staging_games_copy, staging_team_roster_copy, staging_teams_copy, staging_players_copy, staging_teamstats_copy, staging_playerstats_copy]
 data_check_1 = [player_count,team_count,game_count,playerstats_count,teamstats_count,contracts_count]
-data_check_2 = [player_count, team_count, game_count, playerstats_count,teamstats_count, contracts_count]
+data_check_2 = [player_preview, team_preview, game_preview, playerstats_preview,teamstats_preview, contracts_preview]
