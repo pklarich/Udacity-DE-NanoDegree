@@ -1,8 +1,8 @@
 import psycopg2
 import configparser
-from sql_queries import data_check_1,
+from sql_queries import data_check_1, data_check_2
 
-def data_check_1(cur, conn):
+def dc1(cur, conn):
     """
     Checks each table to make sure they contain records
     """
@@ -11,7 +11,7 @@ def data_check_1(cur, conn):
         results = cur.fetchone()
         print(results)
 
-def data_check_2(cur,conn):
+def dc2(cur,conn):
     """
     Previews data entry into each table to make sure it was loaded correctly
     """
@@ -30,8 +30,8 @@ def main():
     conn = psycopg2.connect("host={} dbname={} user={} password={} port={}".format(*config['CLUSTER'].values()))
     cur = conn.cursor()
 
-    data_check_1(cur,conn)
-    data_check_2(cur,conn)
+    dc1(cur,conn)
+    dc2(cur,conn)
 
     conn.close()
 
