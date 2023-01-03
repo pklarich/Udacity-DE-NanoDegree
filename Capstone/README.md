@@ -83,7 +83,7 @@ The data model is centered around the 'games' table as the facts table. The dime
 
 ## Step 4: Run Pipelines to Model the Data
 
-See etl file. Belwo is an example query that was ran which locates players that have shot with either a field goal percentage of greater than 50% or a 3 point field goal percentage of greateer than 40% in the most recent season and then filters by players being paid less than 10 million dollars. This is a simple example of how this data set could potentially be used to determine under valued players.
+See etl file. Below is an example query that was ran which locates players that have shot with either a field goal percentage of greater than 50% or a 3 point field goal percentage of greateer than 40% in the most recent season and then filters by players being paid less than 10 million dollars. This is a simple example of how this data set could potentially be used to determine under valued players.
 
 ```
 SELECT s1.player_id,
